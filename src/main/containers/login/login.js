@@ -1,7 +1,15 @@
+import { Space, Input, Button } from 'antd';
+
 function Login() {
     return (
         <div>
-            hello world
+            <div>
+                <Space direction="vertical">
+                    <Input />
+                    <Input.Password />
+                    <Button type="primary">Submit</Button>
+                </Space>
+            </div>
         </div>
     );
 }
