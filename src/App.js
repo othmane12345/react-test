@@ -1,12 +1,13 @@
 import './App.css';
 import {Route, Routes, Navigate} from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Login from './main/containers/login/login';
 import Dashboard from './main/containers/dashboard/dashboard';
 import Settings from "./main/containers/settings/settings";
+import { fetchUsersAction } from './main/store/users/user-slice';
 
 const ProtectedRoute = ({ authorization, redirectPath = '/' , children}) => {
-  console.log(authorization)
   if (authorization !== 'User' && authorization !== 'Admin') {
     return <Navigate to={redirectPath} replace />;
   }
@@ -15,7 +16,12 @@ const ProtectedRoute = ({ authorization, redirectPath = '/' , children}) => {
 };
 
 function App() {
-  const [authorization, setAuthorization] = useState('');
+  const authorization = useSelector(state => state.user.userAuthorization);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUsersAction());
+  }, []);
 
   return (
   <Routes>
