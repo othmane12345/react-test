@@ -1,0 +1,43 @@
+@primary-color: #885ca2;
+@secondary-color: #d67b3d;
+
+body {
+    background-color: rgb(43, 29, 72);
+}
+
+/** Input Design **/
+.ant-input-affix-wrapper, .ant-input {
+    border: none;
+    border-bottom: 1px solid @primary-color;
+    border-radius: 0;
+    box-shadow: none !important;
+
+    &:focus {
+        border-color: @secondary-color !important;
+    }
+
+    &:hover {
+        border-color: @secondary-color !important;
+    }
+}
+
+/** Button Design **/
+.ant-btn-primary {
+    border-color: @primary-color;
+    background: @primary-color;
+
+    &:focus {
+        border-color: @secondary-color;
+        background: @secondary-color;
+    }
+
+    &:hover {
+        border-color: @secondary-color;
+        background: @secondary-color;
+    }
+}
+
+/** Typography Design **/
+.ant-typography {
+    margin-bottom: 0 !important;
+}

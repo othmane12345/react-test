@@ -1,0 +1,51 @@
+button {
+    width: 100%;
+    margin-top: 10px
+}
+
+.image-animated {
+    -webkit-animation: bgcolorchange 20s infinite; /* Chrome, Safari, Opera */ 
+    animation: 20s infinite bgcolorchange;
+    height: 405px;
+    margin-right: 135px;
+}
+
+@keyframes bgcolorchange {
+    0% {
+      background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
+    }
+    50% {
+      background-image: linear-gradient(to top, #cc208e 0%, #6713d2 100%);
+    }
+    75% {
+      background-image: linear-gradient(to top, #cc208e 0%, #6713d2 100%);
+    }
+    100% {
+      background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);
+    }
+}
+  /* Chrome, Safari, Opera */
+  
+@-webkit-keyframes bgcolorchange {
+    0%   {background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);}
+    50%  {background-image: linear-gradient(to right, #ed6ea0 0%, #ec8c69 100%);}
+    100% {background-image: linear-gradient(-225deg, #FFE29F 0%, #FFA99F 48%, #FF719A 100%);}
+}
+
+.main-wrap {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    width: 100vw;
+}
+
+.login-wrap {
+    display: flex;
+    width: 423px;
+    height: 305px;
+    justify-content: center;
+    align-items: center;
+    background: #FFFFFF;
+    border-radius: 20px;
+}
