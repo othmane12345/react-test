@@ -1,0 +1,16 @@
+.dashboard-body {
+    display: flex;
+    padding: 15px 20px;
+    height: calc(100vh - 51px);
+    overflow: auto;
+}
+
+.cards-holder {
+    width: 100%;
+    padding-bottom: 10px;
+    // background-color: #FFFFFF;
+}
+
+.card {
+    padding: 5px 0;
+}

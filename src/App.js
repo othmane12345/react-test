@@ -8,6 +8,7 @@ import Settings from "./main/containers/settings/settings";
 import { fetchUsersAction } from './main/store/users/user-slice';
 
 const ProtectedRoute = ({ authorization, redirectPath = '/' , children}) => {
+  console.log(authorization)
   if (authorization !== 'User' && authorization !== 'Admin') {
     return <Navigate to={redirectPath} replace />;
   }
@@ -21,12 +22,12 @@ function App() {
 
   useEffect(() => {
     dispatch(fetchUsersAction());
-  }, );
+  }, []);
 
   return (
   <Routes>
-    <Route index path="/" exact element={<Login />}/>
-    <Route path='/Home' exact element={
+    <Route index path="/" element={<Login />}/>
+    <Route path='/Home' element={
       <ProtectedRoute authorization={authorization}>
         <Dashboard/>
       </ProtectedRoute>

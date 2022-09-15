@@ -2,7 +2,7 @@
 @secondary-color: #d67b3d;
 
 body {
-    background-color: rgb(43, 29, 72);
+    background-color: #F3F3F3;
 }
 
 /** Input Design **/
@@ -18,6 +18,31 @@ body {
 
     &:hover {
         border-color: @secondary-color !important;
+    }
+}
+
+.search-input {
+    .ant-input {
+        border-bottom: none;
+    }
+
+    .ant-input-group-addon {
+        width: fit-content;
+        margin: 0;
+
+        button {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: none;
+            margin: 0;
+        }
+    }
+
+    .ant-input-wrapper.ant-input-group {
+        border: 1px solid rgba(0,0,0,0.15);
+        border-radius: 16px;
+        padding: 0 10px;
     }
 }
 
