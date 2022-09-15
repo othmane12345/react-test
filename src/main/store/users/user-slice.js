@@ -1,5 +1,5 @@
-import {createSlice, PayloadAction} from '@reduxjs/toolkit';
-import {Users} from '../../../shared/data/users';
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { Users } from '../../../shared/data/users';
 import _ from 'lodash';
 
 const userSlice = createSlice ({
@@ -7,7 +7,7 @@ const userSlice = createSlice ({
     initialState: {
         users: [],
         currentUser: null,
-        userAuthorozation: '',
+        userAuthorization: '',
         userId: 0
     },
     reducers: {
@@ -15,18 +15,23 @@ const userSlice = createSlice ({
             state.users = action.payload;
         },
         connect: (state, action) => {
-            const {password, userName, email} = action.payload;
-            const findUser = _.find(state.users, user => user.password === password && (user.userName === userName || user.email === email));
-            if (findUser) {
-                state.currentUser = findUser;
-                state.userAuthorozation = findUser.authorization;
-                state.userId = findUser.id;
-            }
+            const {findUser} = action.payload;
+            state.currentUser = findUser;
+            state.userAuthorization = findUser.authorization;
+            state.userId = findUser.id;      
         },
         disconnect: (state) => {
             state.currentUser = null;
-            state.userAuthorozation = '';
+            state.userAuthorization = '';
             state.userId = 0;
+        },
+        deleteUser: (state, action) => {
+            state.users = _.filter(state.users, item => item.userId === action.payload);
+        },
+        updateUser: (state, action) => {
+            const {updatedUser} = action.payload;
+            state.currentUser = updatedUser;
+            state.users = _.map(state.users, user => user.id === updatedUser.id ? updatedUser : user);
         }
     }
 })
@@ -35,6 +40,17 @@ export const fetchUsersAction = () => (dispatch) => {
     dispatch(fetchUsers(Users));
 }
 
-export const { fetchUsers, connect, disconnect } = userSlice.actions;
+export const connectUser = (payload) => (dispatch, getState) => {
+    const state = getState();
+    const {password, userName} = payload;
+    const findUser = _.find(state.user.users, user => user.password === password && (user.username === userName || user.email === userName));
+    if (findUser) {
+        dispatch(connect({findUser}));
+    } else {
+        dispatch(disconnect());
+    }
+}
+
+export const { fetchUsers, connect, disconnect, updateUser, deleteUser } = userSlice.actions;
 
 export default userSlice.reducer
