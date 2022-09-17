@@ -22,7 +22,7 @@ const postSlice = createSlice ({
 
         },
         deletePost: (state, action) => {
-            
+
         }
     }
 })
@@ -35,6 +35,6 @@ export const fetchPostsAction = () => (dispatch, getState) => {
     dispatch(fetchPosts(posts));
 }
 
-export const { fetchPosts } = postSlice.actions;
+export const { fetchPosts, addPost, deletePost } = postSlice.actions;
 
 export default postSlice.reducer

@@ -1,25 +1,76 @@
 import "./navbar.scss";
 import { useSelector, useDispatch } from 'react-redux';
-import { Space, Avatar, Divider } from "antd";
-import { UserOutlined } from '@ant-design/icons';
+import { Space, Avatar, Divider, Dropdown, Menu } from "antd";
+import { useState } from "react";
+import { UserOutlined, PoweroffOutlined, SettingOutlined } from '@ant-design/icons';
 import SearchBar from "../../components/search-bar/search-bar";
+import { useNavigate } from 'react-router-dom';
+import { disconnect } from "../../../main/store/users/user-slice";
 
 function Navbar() {
+    const [open, setOpen] = useState(false);
     const currentUser = useSelector(state => state.user.currentUser);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+
+    function disconnectUser() {
+        dispatch(disconnect());
+    }
+
+    const handleOpenChange = (flag) => {
+        setOpen(flag);
+      };
+
+    const onClick = (e) => {
+        switch(e.key) {
+            case 'disconnect': 
+                disconnectUser();
+                navigate('/')
+                break;
+        }
+    };
+
+    const menu = (
+        <Menu
+          onClick={onClick}
+          items={[
+            {
+                key: 'settings',
+                label: (<span>Settings</span>),
+                icon: (<SettingOutlined />)
+            },
+            {
+                type: 'divider'
+            },
+            {
+              key: 'disconnect',
+              label: (<span>Disconnect</span>),
+              icon: (<PoweroffOutlined />)
+            },
+          ]}
+        />
+      );
 
     return (
         <div className="navbar-wrap">
             <div className="navbar-main">
                 <span>
-                    <img src="/x-hub2.jpg"/>
+                    <Space>
+                        <img src="/x-hub2.jpg"/>
+                        <SearchBar />
+                    </Space>
                 </span>
                 <span>
                     <Space>
-                        <SearchBar />
                         <Divider type="vertical" />
-                        <Avatar style={{ backgroundColor: '#d67b3d', verticalAlign: 'middle' }} size="large" gap={4} icon={<UserOutlined />}>
-                        </Avatar>
-                       {currentUser.name}
+                        <Dropdown overlay={menu} onOpenChange={handleOpenChange} open={open}>
+                            <Space className="hover-menu">
+                                <Avatar style={{ backgroundColor: '#d67b3d', verticalAlign: 'middle' }} size="large" gap={4} icon={<UserOutlined />}>
+                                </Avatar>
+                                {currentUser.name}
+                            </Space>
+                        </Dropdown>
+
                     </Space>
                 </span>
             </div>

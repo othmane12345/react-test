@@ -24,6 +24,18 @@ body {
 .search-input {
     .ant-input {
         border-bottom: none;
+        -webkit-transition: all 0.7s ease 0s;
+        -moz-transition: all 0.7s ease 0s;
+        -o-transition: all 0.7s ease 0s;
+        transition: all 0.7s ease 0s;
+        padding: 6px 0 0 15px;
+        margin-right: 40px;
+
+        &:focus {
+            padding-right: 120px;  
+            margin-right: 120px;
+            //width: 450px;
+        }
     }
 
     .ant-input-group-addon {
@@ -43,6 +55,10 @@ body {
         border: 1px solid rgba(0,0,0,0.15);
         border-radius: 16px;
         padding: 0 10px;
+        -webkit-transition: all 0.7s ease 0s;
+        -moz-transition: all 0.7s ease 0s;
+        -o-transition: all 0.7s ease 0s;
+        transition: all 0.7s ease 0s;
     }
 }
 
@@ -65,4 +81,23 @@ body {
 /** Typography Design **/
 .ant-typography {
     margin-bottom: 0 !important;
+}
+
+::-webkit-scrollbar {
+    width: 7px;
+}
+  
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1; 
+}
+   
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: #888; 
+    border-radius: 20px;
+
+    &:hover {
+        background: #555; 
+    }
 }

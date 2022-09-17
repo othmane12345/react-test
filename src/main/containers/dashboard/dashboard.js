@@ -7,6 +7,7 @@ import { useSelector, useDispatch } from 'react-redux'
 import { Space } from "antd"
 import _ from  "lodash"
 import { fetchPostsAction } from "../../store/posts/post-slice"
+import NewPost from "../../components/new-post/new-post"
 
 function Dashboard() {
     const posts = useSelector(state => state.post.content);
@@ -21,6 +22,7 @@ function Dashboard() {
             <Navbar />
             <div className="dashboard-body">
                 <Space className="cards-holder" direction="vertical" >
+                    <NewPost/>
                     {_.map(posts, post => <PostCards className="card" key={post.id} post={post} />)}
                 </Space>
             </div>
