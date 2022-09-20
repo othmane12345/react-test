@@ -19,13 +19,20 @@ function Navbar() {
 
     const handleOpenChange = (flag) => {
         setOpen(flag);
-      };
+    };
+
+    function redirectHome() {
+        navigate('/Home');
+    }
 
     const onClick = (e) => {
         switch(e.key) {
             case 'disconnect': 
                 disconnectUser();
-                navigate('/')
+                navigate('/');
+                break;
+            case 'settings':
+                navigate('/Settings');
                 break;
         }
     };
@@ -49,14 +56,14 @@ function Navbar() {
             },
           ]}
         />
-      );
+    );
 
     return (
         <div className="navbar-wrap">
             <div className="navbar-main">
                 <span>
                     <Space>
-                        <img src="/x-hub2.jpg"/>
+                        <img onClick={() => redirectHome()} src="/x-hub2.jpg"/>
                         <SearchBar />
                     </Space>
                 </span>
