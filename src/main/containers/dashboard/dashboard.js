@@ -10,7 +10,7 @@ import { fetchPostsAction } from "../../store/posts/post-slice"
 import NewPost from "../../components/new-post/new-post"
 
 function Dashboard() {
-    const posts = useSelector(state => state.post.content);
+    const posts = useSelector(state => state.posts.content);
     const dispatch = useDispatch();
 
     useEffect(() => {

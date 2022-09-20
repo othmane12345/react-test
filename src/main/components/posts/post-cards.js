@@ -1,5 +1,5 @@
 import { Card, Typography, Space, Avatar } from 'antd';
-import _, { initial } from 'lodash';
+import _ from 'lodash';
 const { Paragraph, Text} = Typography;
 
 function PostCards({post}) {
