@@ -7,7 +7,8 @@ const postSlice = createSlice ({
     initialState: {
         content: [],
         allPosts: [],
-        searchResult: [],
+        searchPost: [],
+        searchActive: false,
         pagination: {
             currentPage: 0,
             numberOfLoadedItems: 0,
@@ -33,7 +34,10 @@ const postSlice = createSlice ({
             state.content = _.filter(state.content, post => post.userId !== action.payload);
         },
         searchPosts: (state, action) => {
-
+            state.searchPost = action.payload;
+        },
+        toggleSearch: (state, action) => {
+            state.searchActive = action.payload;
         }
     }
 })
@@ -50,11 +54,20 @@ export const fetchPostsAction = () => (dispatch, getState) => {
 export const addNewPost = (payload) => (dispatch, getState) => {
     const state = getState();
     var userId = _.get(payload, 'userId', state.user.userId);
-    var postId = _.max(_.map(state.posts.allPosts, item => item.id)) + 1;
+    var postId = _.max(_.map(state.posts.allPosts, item => _.toInteger(item.id))) + 1;
     dispatch(addPost({...payload, userId: _.get(payload, 'id', userId), postId}));
     dispatch(fetchPostsAction());
 }
 
-export const { initAllPosts, fetchPosts, addPost, deletePost, searchPosts } = postSlice.actions;
+export const searchPostAction = (payload) => (dispatch, getState) => {
+    const state = getState();
+    const allPosts = state.posts.allPosts;
+    const {users} = state.user;
+    const posts = _.map(_.filter(allPosts, item => _.includes(item.title, payload)), post => ({...post,
+         userName: _.get(_.find(users, user => user.id === post.userId), 'name')}));
+    dispatch(searchPosts(posts))
+}
+
+export const { initAllPosts, fetchPosts, addPost, deletePost, searchPosts, toggleSearch } = postSlice.actions;
 
 export default postSlice.reducer

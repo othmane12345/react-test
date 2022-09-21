@@ -5,7 +5,9 @@ import { useSelector, useDispatch } from 'react-redux';
 import Login from './main/containers/login/login';
 import Dashboard from './main/containers/dashboard/dashboard';
 import Settings from "./main/containers/settings/settings";
+import NotFound from './main/containers/not-found/not-found';
 import { fetchUsersAction } from './main/store/users/user-slice';
+import SearchUser from './main/containers/search/search-user-result';
 
 const ProtectedRoute = ({ authorization, redirectPath = '/' , children}) => {
   console.log(authorization)
@@ -37,7 +39,13 @@ function App() {
        <Settings/>
       </ProtectedRoute>
     }/>
-    <Route path='*' element={<Navigate to="/" replace />} />
+    <Route path="/search" element={
+    <ProtectedRoute authorization={authorization}>
+      <SearchUser/>
+    </ProtectedRoute> } 
+    />
+    <Route path="/notFound" element={<NotFound />}/>
+    <Route path='*' element={<Navigate to="/notFound" replace />} />
   </Routes>
   );
 }
