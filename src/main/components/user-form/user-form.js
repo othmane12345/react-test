@@ -1,43 +1,65 @@
-import { Button, Form, Input, Typography, notification } from 'antd';
+import { Button, Form, Input, Typography, notification, Row, Space, Select} from 'antd';
 import { useSelector, useDispatch } from 'react-redux';
-import { updateUser } from '../../store/users/user-slice';
+import { addNewUserAction, updateUser } from '../../store/users/user-slice';
 import './user-form.scss';
 
 const { Title, Text } = Typography;
+const { Option } = Select;
 
-function UserForm() {
+function UserForm({usage, closeModal}) {
+    const [form] = Form.useForm();
     const userInformation = useSelector(state => state.user.currentUser)
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     const onFinish = (values) => {
-        dispatch(updateUser({updatedUser: {...userInformation, ...values}}));
-        notification.success({
-            message: 'Success',
-            description: `The User was updated successfully!`,
-            placement: 'bottomRight'
-          });
+        if (usage === 'add') {
+            dispatch(addNewUserAction({...values}));
+            notification.success({
+                message: 'Success',
+                description: `The User was Added successfully!`,
+                placement: 'bottomRight'
+              });
+            closeModal();
+        } else {
+            dispatch(updateUser({updatedUser: {...userInformation, ...values}}));
+            notification.success({
+                message: 'Success',
+                description: `The User was updated successfully!`,
+                placement: 'bottomRight'
+              });
+        }
+
     };
     
     const onFinishFailed = (errorInfo) => {
-        console.log('Failed:', errorInfo);
-        notification.error({
-            message: 'Error',
-            description:
-              `An error occurred while updating user information please make sure that the all informations are correct before proceding!`,
-            placement: 'bottomRight'
-          });
+        if (usage === 'add') {
+            notification.error({
+                message: 'Error',
+                description:
+                  `An error occurred while creating user please make sure that the all informations are correct before proceding!`,
+                placement: 'bottomRight'
+              });
+        } else {
+            notification.error({
+                message: 'Error',
+                description:
+                  `An error occurred while updating user information please make sure that the all informations are correct before proceding!`,
+                placement: 'bottomRight'
+              });
+        }
+
     };
 
-
     return (
-        <div className="form-wrapper">
+        <Space className="form-wrapper" direction="vertical">
             <Title level={3}>User Information</Title>
 
             <Form className='form'
+             form={form}
              name="basic"
              labelCol={{xs: {span: 24}, sm: {span: 4}}}
              wrapperCol={{xs: {span: 24}, sm: {span: 20}}}
-             initialValues={{...userInformation, confirm: userInformation.password}}
+             initialValues={usage === 'add' ? {} : {...userInformation, confirm: userInformation.password}}
              onFinish={onFinish}
              onFinishFailed={onFinishFailed}
              autoComplete="off"
@@ -123,6 +145,20 @@ function UserForm() {
                     <Input />
                 </Form.Item>
 
+                {usage === 'add' ? <Form.Item
+                label="Authorization"
+                name="authorization"
+                rules={[{
+                    required: true,
+                    message: 'Please choose a role',
+                }]}
+                >
+                    <Select>
+                        <Option value="Admin">Administrator</Option>
+                        <Option value="User">User</Option>
+                    </Select>
+                </Form.Item> : null}
+
                 <Text strong>Address</Text>
 
                 <Form.Item label="Street">
@@ -172,14 +208,27 @@ function UserForm() {
                     </Form.Item>
                 </Form.Item>
 
+                {usage === 'add' ? 
+                <div>
+                    <hr/>
+                    <Row justify="end" align="middle" style={{marginTop: '20px'}}>
+                        <Button type="default" onClick={() => closeModal()} style={{marginRight: '10px'}}>Cancel</Button>
+                        <Form.Item style={{marginBottom: '0'}}>
+                            <Button type="primary" htmlType="submit">
+                                Create
+                            </Button>
+                        </Form.Item>
+                    </Row>
+                </div> :
                 <Form.Item wrapperCol={{ span: 4, offset: 20 }}>
                     <Button type="primary" htmlType="submit" block>
                         Submit
                     </Button>
                 </Form.Item>
+                }
 
              </Form>
-        </div>
+        </Space>
     );
 }
 
