@@ -1,9 +1,13 @@
-import './App.css';
+import './App.less';
 import {Route, Routes, Navigate} from "react-router-dom";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import Login from './main/containers/login/login';
 import Dashboard from './main/containers/dashboard/dashboard';
 import Settings from "./main/containers/settings/settings";
+import NotFound from './main/containers/not-found/not-found';
+import { fetchUsersAction } from './main/store/users/user-slice';
+import SearchUser from './main/containers/search/search-user-result';
 
 const ProtectedRoute = ({ authorization, redirectPath = '/' , children}) => {
   console.log(authorization)
@@ -15,12 +19,17 @@ const ProtectedRoute = ({ authorization, redirectPath = '/' , children}) => {
 };
 
 function App() {
-  const [authorization, setAuthorization] = useState('');
+  const authorization = useSelector(state => state.user.userAuthorization);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(fetchUsersAction());
+  }, []);
 
   return (
   <Routes>
-    <Route index path="/" exact element={<Login />}/>
-    <Route path='/Home' exact element={
+    <Route index path="/" element={<Login />}/>
+    <Route path='/Home' element={
       <ProtectedRoute authorization={authorization}>
         <Dashboard/>
       </ProtectedRoute>
@@ -30,7 +39,13 @@ function App() {
        <Settings/>
       </ProtectedRoute>
     }/>
-    <Route path='*' element={<Navigate to="/" replace />} />
+    <Route path="/search" element={
+    <ProtectedRoute authorization={authorization}>
+      <SearchUser/>
+    </ProtectedRoute> } 
+    />
+    <Route path="/notFound" element={<NotFound />}/>
+    <Route path='*' element={<Navigate to="/notFound" replace />} />
   </Routes>
   );
 }
